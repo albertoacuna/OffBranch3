@@ -39,5 +39,6 @@ public class CompassService extends Service {
 	        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 	        mOrientationManager = new OrientationMngr(sensorManager, locationManager);
+	        mOrientationManager.start();
 	  }
 }
