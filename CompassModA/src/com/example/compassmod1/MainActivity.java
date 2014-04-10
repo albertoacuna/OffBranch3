@@ -8,35 +8,33 @@ import android.content.ServiceConnection;
 import android.content.ComponentName;
 import android.os.IBinder;
 import android.content.Intent;
+import android.os.Handler;
 
 public class MainActivity extends Activity {
 	
 	TextView fHeading;
-	 private CompassService.CompassBinder mCompassService;
-
-	 private ServiceConnection mConnection = new ServiceConnection() {
-		 @Override
-	     public void onServiceConnected(ComponentName name, IBinder service) {
-	            if (service instanceof CompassService.CompassBinder) {
-	                mCompassService = (CompassService.CompassBinder) service;
-	                
-	            }
-	     }
-
-	        @Override
-	     public void onServiceDisconnected(ComponentName name) {
-	            // Do nothing.
-	     }
-	 };
+	private CompassService mCompassService;
+	private Handler handler = new Handler();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		 bindService(new Intent(this, CompassService.class), mConnection, 0);
-		 fHeading.setText(String.valueOf(mCompassService.getHeading()));
 		fHeading = (TextView) findViewById(R.id.fHeading);
+		mCompassService = new CompassService(this);
+		
+		handler.postDelayed(runnable, 1000);
 	}
 
+	private Runnable runnable = new Runnable() {
+		   @Override
+		   public void run() { 
+			   fHeading.setText("Orientation: " + String.valueOf(mCompassService.getHeading()));
+			   
+		      handler.postDelayed(this, 1000);
+		   }
+		};
+	
     @Override
     protected void onResume() {
         super.onResume();

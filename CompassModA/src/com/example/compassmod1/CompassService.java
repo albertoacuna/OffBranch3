@@ -10,11 +10,12 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.location.Location;
+import android.app.Activity;
 
-public class CompassService extends Service {
+public class CompassService {
 	 private OrientationMngr mOrientationManager;
 	 
-	 public class CompassBinder extends Binder {
+	 /*public class CompassBinder extends Binder {
 		 	public double getHeading(){
 		 		return mOrientationManager.getHeading();
 		 	}
@@ -30,15 +31,22 @@ public class CompassService extends Service {
 	 public IBinder onBind(Intent intent) {
 	        return mBinder;
 	 }
+	 */
+	    public CompassService(Activity mActivity) {
 	 
-	  @Override
-	    public void onCreate() {
-	        super.onCreate();
 	      
-	        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-	        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	        SensorManager sensorManager = (SensorManager) mActivity.getSystemService(Context.SENSOR_SERVICE);
+	        LocationManager locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
 
 	        mOrientationManager = new OrientationMngr(sensorManager, locationManager);
 	        mOrientationManager.start();
+	  }
+	    
+	  public double getHeading(){
+		  return mOrientationManager.getHeading();
+	  }
+	  
+	  public Location getLocation(){
+		  return mOrientationManager.getLocation();
 	  }
 }
