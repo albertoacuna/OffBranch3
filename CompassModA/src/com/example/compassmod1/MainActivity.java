@@ -1,5 +1,5 @@
 package com.example.compassmod1;
-
+//added this to test something
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
